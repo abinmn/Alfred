@@ -2,7 +2,7 @@ from django.db import models
 
 #List of Colleges
 class College(models.Model):
-    college = models.CharField("College Name", max_length=200)
+    name = models.CharField("College Name", max_length=200)
 
     def __str__(self):
         return self.college
@@ -38,24 +38,24 @@ class Event(models.Model):
         return self.name
 
 class Event_Participants(models.Model):
-    event = models.ForeignKey(Event, verbose_name=("Event Id"), on_delete=models.CASCADE)
-    excel_id = models.ForeignKey(ExcelID, related_name="excelID", on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, verbose_name=("Event Id"), on_delete=models.CASCADE, related_name="participants")
+    excel_id = models.ForeignKey(ExcelID, related_name="events", on_delete=models.CASCADE)
     #Applicable only for paid events
     have_paid = models.BooleanField()
     is_shortListed = models.BooleanField()
     is_winner = models.BooleanField()
-    winner_position = models.IntegerField(blank=True)
+    winner_position = models.IntegerField(blank=True, default=0)
 
     class Meta:
         verbose_name = "Event Participant"
 
     def __str__(self):
-        return "%s - %s" % (self.excel_id, self.excel_id.name)
+        return "%s - %s" % (self.event.name, self.excel_id.name)
 
 class Team(models.Model):
     team_id = models.CharField(max_length=32)   
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    excel_id = models.ManyToManyField(ExcelID, related_name="student")
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="teams")
+    members = models.ManyToManyField(ExcelID, related_name="teams")
 
     def __str__(self):
         return "%s %s" % (self.team_id, self.event.name)
