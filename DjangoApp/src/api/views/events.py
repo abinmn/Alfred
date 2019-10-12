@@ -1,11 +1,13 @@
 from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import status
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 
 from api.serializer import *
+from api.helper_functions import misc
+
 
 class AllEventsList(ListAPIView):
     """ 
@@ -22,16 +24,25 @@ class EventDetails(RetrieveAPIView):
     lookup_field = 'id'
 
     def get_queryset(self):
-        id = self.kwargs['id']
-        event = Event.objects.filter(id=id)
-        return event
+        return misc.get_event_queryset(self)
 
 class EventRules(RetrieveAPIView):
-
+    """  
+    Get: Returns the event rules
+    """
     serializer_class = EventRulesSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
-        id = self.kwargs['id']
-        event = Event.objects.filter(id=id)
-        return event
+        return misc.get_event_queryset(self)
+
+class EventStatus(RetrieveUpdateAPIView):
+    """  
+    PATCH: Update whether event has started or not
+    """
+    serializer_class = EventStatusSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return misc.get_event_queryset(self)
+        

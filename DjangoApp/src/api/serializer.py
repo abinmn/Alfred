@@ -30,3 +30,9 @@ class EventRulesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'name','short_rules', 'long_rules']
+
+class EventStatusSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = ['id', 'is_active']
