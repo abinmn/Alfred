@@ -8,7 +8,8 @@ urlpatterns = [
     path('excel_id/', registration.ExcelIdDetails.as_view()),
 
     path('events/', events.AllEventsList.as_view()),
-    path('events/<slug:id>', events.EventDetails.as_view()),
+    path('events/paid', events.PaidEventsList.as_view()),
+    path('events/<int:id>', events.EventDetails.as_view()),
     path('events/<slug:id>/rules', events.EventRules.as_view()),
     path('events/<slug:id>/status', events.EventStatus.as_view()),
 

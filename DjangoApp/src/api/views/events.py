@@ -16,6 +16,13 @@ class AllEventsList(ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventListSerializer
 
+class PaidEventsList(ListAPIView):
+    """ 
+    Get: Returns a list of all paid events
+    """
+    queryset = Event.objects.filter(is_paid=True)
+    serializer_class = EventListSerializer
+
 class EventDetails(RetrieveAPIView):
     """  
     Get: Returns the details of an event with short_rules
