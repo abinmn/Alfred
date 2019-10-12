@@ -8,8 +8,7 @@ class CollegeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ExcelIdSerializer(serializers.ModelSerializer):
-    college = serializers.StringRelatedField(many=False)
-
+    college = serializers.SlugRelatedField(many=False, slug_field='name', queryset=College.objects.all())
     class Meta:
         model = ExcelID
         fields = '__all__'
