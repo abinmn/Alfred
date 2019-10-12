@@ -4,6 +4,6 @@ import api.views.registration as registration
 urlpatterns = [
     path('colleges/', registration.CollegeList.as_view()),
     path('colleges/<int:pk>', registration.CollegeDetails.as_view()),
-    path('excelid/', registration.ExcelIdDetails.as_view()),
+    path('excel_id/', registration.ExcelIdDetails.as_view()),
 
 ]

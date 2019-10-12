@@ -3,7 +3,8 @@ from django.db import models
 #List of Colleges
 class College(models.Model):
     name = models.CharField(
-        "College Name", max_length=200
+        "College Name", max_length=200,
+        unique=True
         )
 
     def __str__(self):

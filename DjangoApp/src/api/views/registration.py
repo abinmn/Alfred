@@ -1,45 +1,45 @@
 from django.shortcuts import render
-from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 
-from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView
+from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 
 from api.serializer import *
 from api.helper_functions import generate_excelid as gen
 
-class CollegeList(APIView):
-    #get list of all colleges
-    def get(self, request, format=None):
-        colleges = College.objects.all()
-        serializer = CollegeSerializer(colleges, many=True)
-        return Response(serializer.data)
 
-    #Add new colleges to list
-    def post(self, request, format=None):
-        serializer = CollegeSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class CollegeList(ListCreateAPIView):
+    """
+    Retrieve list of all colleges
+    Create a new college name if it doesn't exist
+    """
+    queryset = College.objects.all()
+    serializer_class = CollegeSerializer
 
 
 class CollegeDetails(ListAPIView):
+    """
+    This view return a list of all students registered
+    from a college.
+    """
     serializer_class = ExcelIdSerializer
 
     def get_queryset(self):
-        """
-        This view return a list of all students registered
-        from a college.
-        """
-        pk = self.kwargs['pk']
-        college = College.objects.get(pk=pk)
-        students = college.students.all()
-        return students
+        try:
+            pk = self.kwargs['pk']
+            college = College.objects.get(pk=pk)
+            students = college.students.all()
+            return students
+        except ObjectDoesNotExist:
+            raise NotFound()
 
 class ExcelIdDetails(APIView):
-    # Retrieve participant details using excel_id/name/email/phone_number
+    """  
+    Retrieve participant details using excel_id/name/email/phone_number
+    """
     def get_object(self, request):
         excelid = request.query_params.get('excel_id', None)
         name = request.query_params.get('name', None)
