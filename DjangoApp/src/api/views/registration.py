@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import Http404
 
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -23,20 +24,19 @@ class CollegeList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class CollegeDetails(APIView):
 
-    def get_object(self, pk):
-        try:
-            return College.objects.get(pk=pk)
-        except:
-            raise Http404
+class CollegeDetails(ListAPIView):
+    serializer_class = ExcelIdSerializer
 
-    #Get details of students in a college, 404 if college id not found
-    def get(self, request, pk, format=None):
-        college = self.get_object(pk)
+    def get_queryset(self):
+        """
+        This view return a list of all students registered
+        from a college.
+        """
+        pk = self.kwargs['pk']
+        college = College.objects.get(pk=pk)
         students = college.students.all()
-        serializer = ExcelIdSerializer(students, many=True)
-        return Response(serializer.data)
+        return students
 
 class ExcelIdDetails(APIView):
     # Retrieve participant details using excel_id/name/email/phone_number
