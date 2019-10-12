@@ -19,8 +19,19 @@ class EventDetails(RetrieveAPIView):
     Get: Returns the details of an event with short_rules
     """
     serializer_class = EventDetailsSerializer
+    lookup_field = 'id'
 
     def get_queryset(self):
-        id = self.kwargs['pk']
+        id = self.kwargs['id']
+        event = Event.objects.filter(id=id)
+        return event
+
+class EventRules(RetrieveAPIView):
+
+    serializer_class = EventRulesSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        id = self.kwargs['id']
         event = Event.objects.filter(id=id)
         return event
