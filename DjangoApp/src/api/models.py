@@ -28,7 +28,8 @@ class ExcelID(models.Model):
 class Event(models.Model):
     id = models.CharField(primary_key = True, max_length=10)
     name = models.CharField("Event Name", max_length=50)
-    rules = models.TextField("Event Rules", blank=True)
+    short_rules = models.TextField("Event Rules", blank=True)
+    long_rules = models.TextField("Event Rules", blank=True)
     venue = models.CharField(max_length = 100, blank=True)
     is_paid = models.BooleanField("Paid Event", default=False)
     is_team = models.BooleanField("Team Event", default=False)
