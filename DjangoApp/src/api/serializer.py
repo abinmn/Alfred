@@ -23,7 +23,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        exclude = ['short_rules', 'long_rules']
+        exclude = ['long_rules']
 
 class EventRulesSerializer(serializers.ModelSerializer):
 
