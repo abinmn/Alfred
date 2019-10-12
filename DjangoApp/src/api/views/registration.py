@@ -36,15 +36,18 @@ class CollegeDetails(ListAPIView):
         except ObjectDoesNotExist:
             raise NotFound()
 
-class ExcelIdDetails(APIView):
-    """  
-    Retrieve participant details using excel_id/name/email/phone_number
+class ExcelIdDetails(ListCreateAPIView):
     """
-    def get_object(self, request):
-        excelid = request.query_params.get('excel_id', None)
-        name = request.query_params.get('name', None)
-        email = request.query_params.get('email', None)
-        phone_number = request.query_params.get('phone_number', None)
+    GET:Retrieve student details with excelid,name,phone_number or email"
+    POST:Create ExcelID for given student details
+    """
+    serializer_class = ExcelIdSerializer
+
+    def get_queryset(self):
+        excelid = self.request.query_params.get('excel_id', None)
+        name = self.request.query_params.get('name', None)
+        email = self.request.query_params.get('email', None)
+        phone_number = self.request.query_params.get('phone_number', None)
 
         if excelid:
             return ExcelID.objects.filter(pk=excelid)
@@ -54,12 +57,7 @@ class ExcelIdDetails(APIView):
             return ExcelID.objects.filter(email=email)
         if excelid:
             return ExcelID.objects.filter(phone_number=phone_number)
-        
-    def get(self, request, format=None):
-       search_results = self.get_object(request)
-       serializer = ExcelIdSerializer(search_results, many=True)
-       return Response(serializer.data)
-
+    
     def post(self, request, format=None):
         request.data['id'] = gen.generate()
         serializer = ExcelIdSerializer(data=request.data)  
