@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
+
 from api.models import *
 
 class CollegeSerializer(serializers.ModelSerializer):
@@ -8,10 +10,18 @@ class CollegeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ExcelIdSerializer(serializers.ModelSerializer):
-    college = serializers.SlugRelatedField(many=False, slug_field='name', queryset=College.objects.all())
+    college = serializers.SlugRelatedField(many=False, slug_field='name', 
+                                        queryset=College.objects.all())
+    
     class Meta:
         model = ExcelID
         fields = '__all__'
+
+class ExcelIdMinSerializer(serializers.ModelSerializer):
+    college = serializers.SlugRelatedField(many=False, slug_field='name', queryset=College.objects.all())
+    class Meta:
+        model = ExcelID
+        fields = ['id', 'name', 'college']
 
 class EventListSerializer(serializers.ModelSerializer):
 

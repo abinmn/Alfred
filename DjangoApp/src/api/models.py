@@ -46,13 +46,14 @@ class Event_Participants(models.Model):
     event = models.ForeignKey(Event, verbose_name=("Event Id"), on_delete=models.CASCADE, related_name="participants")
     excel_id = models.ForeignKey(ExcelID, related_name="events", on_delete=models.CASCADE)
     #Applicable only for paid events
-    have_paid = models.BooleanField()
-    is_shortListed = models.BooleanField()
-    is_winner = models.BooleanField()
+    have_paid = models.BooleanField(default=False)
+    is_shortListed = models.BooleanField(default=False)
+    is_winner = models.BooleanField(default=False)
     winner_position = models.IntegerField(blank=True, default=0)
 
     class Meta:
         verbose_name = "Event Participant"
+        unique_together = [['excel_id','event']]
 
     def __str__(self):
         return "%s - %s" % (self.event.name, self.excel_id.name)
