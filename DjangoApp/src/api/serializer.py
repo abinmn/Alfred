@@ -46,3 +46,11 @@ class EventStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'is_active']
+
+class ParticipantDetailSerializer(serializers.ModelSerializer):
+
+    personal_info = ExcelIdMinSerializer(source='excel_id', read_only=True)
+    class Meta:
+        model = Event_Participants
+        fields = '__all__'
+    

@@ -1,6 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 import api.views.registration as registration
 import api.views.events as events
+import api.views.participants as participants
 
 urlpatterns = [
     path('colleges/', registration.CollegeList.as_view()),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('events/<slug:id>/rules', events.EventRules.as_view()),
     path('events/<slug:id>/status', events.EventStatus.as_view()),
 
+    path('events/<slug:id>/participants', participants.ParticipantsDetailsView.as_view()),
 ]
