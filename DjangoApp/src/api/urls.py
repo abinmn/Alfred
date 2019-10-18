@@ -16,4 +16,5 @@ urlpatterns = [
 
     path('events/<slug:id>/participants', participants.ParticipantsDetailsView.as_view()),
     path('events/<slug:id>/shortlist', participants.ShortListView.as_view()),
+    path('events/<slug:id>/winners', participants.WinnersView.as_view()),
 ]

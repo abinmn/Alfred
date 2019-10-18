@@ -60,3 +60,9 @@ class ShortListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event_Participants
         fields = ['excel_id', 'personal_info', 'is_shortListed']
+
+class WinnerSerializer(serializers.ModelSerializer):
+    personal_info = ExcelIdMinSerializer(source='excel_id', read_only=True)
+    class Meta:
+        model = Event_Participants
+        fields = ['excel_id', 'personal_info', 'is_winner', 'winner_position']
