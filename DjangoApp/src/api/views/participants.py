@@ -35,3 +35,13 @@ class WinnersView(baseviews.ParticipantUpdateWithList,
     def get_queryset(self):
         event = misc.get_event(self)
         return event.participants.filter(is_winner=True)
+
+class ExcelIDEventsView(generics.ListAPIView):
+    serializer_class = ParticipantEventSerializer
+
+    def get_queryset(self):
+        excel_id = self.request.query_params.get('excel_id', None)
+        participant = ExcelID.objects.get(id=excel_id)
+        events = participant.events.all().prefetch_related('event')
+        return events
+    
