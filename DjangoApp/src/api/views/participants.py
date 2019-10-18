@@ -45,3 +45,17 @@ class ExcelIDEventsView(generics.ListAPIView):
         events = participant.events.all().prefetch_related('event')
         return events
     
+class SpecificEventsExcelIDView(generics.RetrieveAPIView):
+    serializer_class = ParticipantDetailSerializer
+    lookup_field = 'id'
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        return queryset.first()
+
+    def get_queryset(self):
+        excel_id = self.request.query_params.get('excel_id', None)
+        event = misc.get_event(self)
+        return event.participants.filter(excel_id=excel_id)
+        
+    
