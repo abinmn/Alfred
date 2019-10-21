@@ -1,3 +1,4 @@
+from functools import partial 
 from api.models import *
 
 from rest_framework import generics
@@ -35,3 +36,5 @@ def set_participant_status(participant,
 	participant.winner_position = winner_position
 	participant.save()
 
+def create_participant_instance(excel_id, event):
+	return Event_Participants(excel_id=excel_id, event=event)

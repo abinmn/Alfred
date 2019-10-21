@@ -62,6 +62,9 @@ class Team(models.Model):
     team_id = models.CharField(max_length=32)   
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="teams")
     members = models.ManyToManyField(ExcelID, related_name="teams")
+    is_shortListed = models.BooleanField(default=False)
+    is_winner = models.BooleanField(default=False)
+    winner_position = models.IntegerField(blank=True, default=0)
 
     def __str__(self):
         return "%s %s" % (self.team_id, self.event.name)
