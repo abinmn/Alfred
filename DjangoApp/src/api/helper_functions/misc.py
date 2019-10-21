@@ -5,6 +5,8 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.exceptions import NotFound
 
+def get_excel_id(excel_id):
+	return ExcelID.objects.get(id=excel_id)
 
 def get_event_queryset(params):
 	id = params.kwargs['id']
@@ -38,3 +40,13 @@ def set_participant_status(participant,
 
 def create_participant_instance(excel_id, event):
 	return Event_Participants(excel_id=excel_id, event=event)
+
+def check_team_duplicate(members, event):
+	"""  
+	Check if any member is part of another team for the same event
+	"""
+	members = map(get_excel_id, members)
+	existing_team = Team.objects.filter(event=event, members__in=members).distinct().count()
+	if existing_team == 0:
+		return False
+	return True

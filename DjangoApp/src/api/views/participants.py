@@ -58,7 +58,7 @@ class SpecificEventsExcelIDView(generics.RetrieveAPIView):
         event = misc.get_event(self)
         return event.participants.filter(excel_id=excel_id)
     
-class TeamDetailsViews(generics.ListCreateAPIView):
+class TeamDetailsViews(generics.ListCreateAPIView, generics.UpdateAPIView):
     serializer_class = TeamSerializer
     lookup_field = 'id'
 
@@ -67,5 +67,15 @@ class TeamDetailsViews(generics.ListCreateAPIView):
         return Team.objects.filter(event=event)
     
     def create(self, request, *args, **kwargs):
-        request.data["event"] = self.kwargs.get("id")
-        return super().create(request, *args, **kwargs)    
+        members = request.data.get("members", [])
+        event = misc.get_event(self)
+        duplicate_team = misc.check_team_duplicate(members, event)
+        if not duplicate_team:
+            request.data["event"] = event.id
+            return super().create(request, *args, **kwargs)
+        
+        #TODO: raise member in another team exception
+    
+    def partial_update(self, request, *args, **kwargs):
+
+        return super().partial_update(request, *args, **kwargs)

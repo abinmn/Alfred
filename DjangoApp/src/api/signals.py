@@ -1,6 +1,9 @@
 import functools
 from django.dispatch import receiver
 from django.db.models.signals import post_save, m2m_changed
+from django.db import IntegrityError
+from django.db import transaction
+
 
 from api.models import Team, Event_Participants
 from api.helper_functions import misc
@@ -16,5 +19,14 @@ def create_participant_instance(sender, **kwargs):
             functools.partial(misc.create_participant_instance, event=event),
             team_members
         )
-        Event_Participants.objects.bulk_create(participant_instance)
+        try:
+            with transaction.atomic():
+                participants = Event_Participants.objects.bulk_create(participant_instance)
+                instance.members.set(team_members)
+        except IntegrityError:
+            pass
+  
     
+@receiver(post_save, sender=Team)
+def update_participant_instance(sender, **kwargs):
+    print(kwargs)
