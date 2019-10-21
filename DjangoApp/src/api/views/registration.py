@@ -6,8 +6,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 
 from api.serializer import *
-from api.helper_functions import generate_excelid as gen
-
+from api.helper_functions import generate
 
 class CollegeList(ListCreateAPIView):
     """
@@ -57,7 +56,7 @@ class ExcelIdDetails(ListCreateAPIView):
             return ExcelID.objects.filter(phone_number=phone_number)
     
     def post(self, request, format=None):
-        request.data['id'] = gen.generate()
+        request.data['id'] = generate.generate_id()
         serializer = ExcelIdSerializer(data=request.data)  
         if serializer.is_valid():
             serializer.save()

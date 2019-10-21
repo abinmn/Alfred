@@ -73,3 +73,11 @@ class WinnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event_Participants
         fields = ['excel_id', 'personal_info', 'is_winner', 'winner_position']
+
+class TeamSerializer(serializers.ModelSerializer):
+    team_members = ExcelIdMinSerializer(source='members', many=True, read_only=True)
+    
+    class Meta:
+        model = Team
+        exclude = ['id']
+    

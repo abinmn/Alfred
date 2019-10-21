@@ -57,5 +57,12 @@ class SpecificEventsExcelIDView(generics.RetrieveAPIView):
         excel_id = self.request.query_params.get('excel_id', None)
         event = misc.get_event(self)
         return event.participants.filter(excel_id=excel_id)
-        
+    
+class TeamDetailsViews(generics.ListCreateAPIView):
+    serializer_class = TeamSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        event = misc.get_event(self)
+        return Team.objects.filter(event=event)
     

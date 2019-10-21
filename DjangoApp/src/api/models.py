@@ -1,5 +1,5 @@
 from django.db import models
-
+from api.helper_functions import generate
 #List of Colleges
 class College(models.Model):
     name = models.CharField(
