@@ -66,3 +66,6 @@ class TeamDetailsViews(generics.ListCreateAPIView):
         event = misc.get_event(self)
         return Team.objects.filter(event=event)
     
+    def create(self, request, *args, **kwargs):
+        request.data["event"] = self.kwargs.get("id")
+        return super().create(request, *args, **kwargs)    

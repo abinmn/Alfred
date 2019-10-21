@@ -80,4 +80,5 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         exclude = ['id']
+        read_only_fields = ['team_id']
     
