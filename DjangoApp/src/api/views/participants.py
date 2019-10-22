@@ -1,8 +1,7 @@
 from rest_framework import generics
 from rest_framework import status
 
-
-from api.helper_functions import baseviews, misc
+from api.helper_functions import baseviews, misc, exceptions
 from api.serializer import *
 from api import models
 
@@ -64,18 +63,34 @@ class TeamDetailsViews(generics.ListCreateAPIView, generics.UpdateAPIView):
 
     def get_queryset(self):
         event = misc.get_event(self)
-        return Team.objects.filter(event=event)
+
+        excel_id = self.request.query_params.get('excel_id', None)    
+        is_shortListed = self.request.query_params.get('is_shortListed', False)    
+        is_winner = self.request.query_params.get('is_winner', False)    
+
+        if (excel_id):
+            excel_id = misc.get_excel_id(excel_id)
+            event = misc.get_event(self)
+            return excel_id.teams.filter(event=event)
+
+        return Team.objects.filter(
+            event = event,
+            is_shortListed = is_shortListed,
+            is_winner = is_winner
+        )
+    
+    def get_object(self):
+        team_id = self.request.data.get("team_id", None)
+        team = misc.get_team(team_id)
+        return team
     
     def create(self, request, *args, **kwargs):
         members = request.data.get("members", [])
         event = misc.get_event(self)
         duplicate_team = misc.check_team_duplicate(members, event)
+        
         if not duplicate_team:
             request.data["event"] = event.id
             return super().create(request, *args, **kwargs)
         
-        #TODO: raise member in another team exception
-    
-    def partial_update(self, request, *args, **kwargs):
-
-        return super().partial_update(request, *args, **kwargs)
+        raise exceptions.custom('duplicate_team')

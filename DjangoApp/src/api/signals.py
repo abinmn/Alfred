@@ -29,4 +29,16 @@ def create_participant_instance(sender, **kwargs):
     
 @receiver(post_save, sender=Team)
 def update_participant_instance(sender, **kwargs):
-    print(kwargs)
+    instance = kwargs.get("instance")
+    team_members = instance.members.all()
+    event = instance.event
+
+    participant_instance = Event_Participants.objects.filter(
+        event = event,
+        excel_id__in = team_members
+    )
+    participant_instance.update(
+        is_shortListed = instance.is_shortListed,
+        is_winner = instance.is_winner,
+        winner_position = instance.winner_position
+    )

@@ -17,7 +17,7 @@ class ParticipantListCreateUpdateAPIView(generics.ListCreateAPIView,
     def get_object(self):
         event = misc.get_event(self)
         excel_id = self.request.data.get("excel_id", None)
-        return misc.get_event_participant(event, excel_id)
+        return misc.get_event_participant(excel_id, event)
        
 
 class ParticipantUpdateWithList(generics.UpdateAPIView):
@@ -30,7 +30,7 @@ class ParticipantUpdateWithList(generics.UpdateAPIView):
         """
         if isinstance(data, list):
             for excel_id in data:
-                participant = misc.get_event_participant(event, excel_id)
+                participant = misc.get_event_participant(excel_id, event)
                 misc.set_participant_status(participant, shortlist_status=True)
             return self.get(request, *args, *kwargs)         
 
@@ -44,6 +44,6 @@ class ParticipantUpdateWithList(generics.UpdateAPIView):
             winner = data.get("is_winner", False)
             winner_position = data.get("winner_position", 0)
 
-            participant = misc.get_event_participant(event, excel_id)
+            participant = misc.get_event_participant(excel_id, event)
             misc.set_participant_status(participant, shortlist_status, winner, winner_position)            
             return self.update(request, *args, *kwargs)

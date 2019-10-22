@@ -4,6 +4,7 @@ from api.models import *
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.exceptions import NotFound
+from api.helper_functions import exceptions
 
 def get_excel_id(excel_id):
 	return ExcelID.objects.get(id=excel_id)
@@ -21,12 +22,22 @@ def get_event(params):
 	except:
 		raise NotFound
 
-def get_event_participant(event, excel_id):
+def get_event_participant(excel_id, event):
 	try:
 		participant = event.participants.get(excel_id=excel_id)
 		return participant
 	except:
-		raise NotFound
+		raise exceptions.custom('excel_id')
+
+def create_participant_instance(excel_id, event):
+	return Event_Participants(excel_id=excel_id, event=event)
+
+def get_team(team_id):
+	try:
+		team = Team.objects.get(team_id=team_id)
+		return team
+	except:
+		raise exceptions.custom('team_not_found')
 
 def set_participant_status(participant, 
 							shortlist_status=False, 
@@ -34,12 +45,18 @@ def set_participant_status(participant,
 							winner_position=0):
 
 	participant.is_shortListed = shortlist_status
-	participant.is_winner = True
+	participant.is_winner = is_winner
 	participant.winner_position = winner_position
 	participant.save()
 
-def create_participant_instance(excel_id, event):
-	return Event_Participants(excel_id=excel_id, event=event)
+
+
+def get_excel_id(excel_id):
+	try:
+		return ExcelID.objects.get(id=excel_id)
+	except:
+		raise exceptions.custom("excel_id")
+
 
 def check_team_duplicate(members, event):
 	"""  

@@ -67,7 +67,8 @@ class Team(models.Model):
     winner_position = models.IntegerField(blank=True, default=0)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        self.team_id = generate.generate_team_id()
+        if self.pk is None:
+            self.team_id = generate.generate_team_id()
         return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
     def __str__(self):
         return "%s %s" % (self.team_id, self.event.name)
