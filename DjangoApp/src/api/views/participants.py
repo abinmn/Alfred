@@ -40,7 +40,7 @@ class ExcelIDEventsView(generics.ListAPIView):
 
     def get_queryset(self):
         excel_id = self.request.query_params.get('excel_id', None)
-        participant = ExcelID.objects.get(id=excel_id)
+        participant = misc.get_excel_id(excel_id)
         events = participant.events.all().prefetch_related('event')
         return events
     
