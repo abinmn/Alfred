@@ -49,6 +49,16 @@ def set_participant_status(participant,
 	participant.winner_position = winner_position
 	participant.save()
 
+def set_team_status(team, query_params):
+	is_shortListed = query_params.get('is_shortListed', False)    
+	is_winner = query_params.get('is_winner', False)
+	winner_position = query_params.get('winner_position', False)
+
+	team.is_shortListed = is_shortListed
+	team.is_winner = is_winner
+	team.winner_position = winner_position
+	team.save()
+
 
 
 def get_excel_id(excel_id):

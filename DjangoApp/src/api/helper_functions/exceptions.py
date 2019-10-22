@@ -1,6 +1,6 @@
 from rest_framework.exceptions import APIException
 
-def custom(type):
+def custom(type=None):
     if type == 'excel_id':
         return APIException("Excel ID not found")
     

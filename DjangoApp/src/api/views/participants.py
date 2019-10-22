@@ -68,22 +68,28 @@ class TeamDetailsViews(generics.ListCreateAPIView, generics.UpdateAPIView):
         is_shortListed = self.request.query_params.get('is_shortListed', False)    
         is_winner = self.request.query_params.get('is_winner', False)    
 
-        if (excel_id):
+        #return excel_id's team for particular event
+        if excel_id:
             excel_id = misc.get_excel_id(excel_id)
             event = misc.get_event(self)
             return excel_id.teams.filter(event=event)
+        
+        if is_shortListed:
+            return Team.objects.filter(event = event, is_shortListed = is_shortListed)
 
-        return Team.objects.filter(
-            event = event,
-            is_shortListed = is_shortListed,
-            is_winner = is_winner
-        )
+        if is_winner:
+            return Team.objects.filter(event = event, is_winner = is_winner)                        
+        
+        return Team.objects.filter(event = event)
     
     def get_object(self):
-        team_id = self.request.data.get("team_id", None)
-        team = misc.get_team(team_id)
-        return team
-    
+        try:
+            team_id = self.request.data.get("team_id", None)
+            team = misc.get_team(team_id)
+            return team
+        except:
+            pass  
+
     def create(self, request, *args, **kwargs):
         members = request.data.get("members", [])
         event = misc.get_event(self)
@@ -94,3 +100,14 @@ class TeamDetailsViews(generics.ListCreateAPIView, generics.UpdateAPIView):
             return super().create(request, *args, **kwargs)
         
         raise exceptions.custom('duplicate_team')
+    
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
+        if isinstance(data, list):
+            for team in data:
+                team_id = team.get("team_id")
+                team_instance = misc.get_team(team_id)
+                misc.set_team_status(team_instance, team)
+            return self.get(request, *args, **kwargs)
+
+        return super().partial_update(request, *args, **kwargs)
