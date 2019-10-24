@@ -21,6 +21,7 @@ class ExcelID(models.Model):
     is_mecian = models.BooleanField(default=False)
     is_FullAccess = models.BooleanField(default=True)
     price = models.IntegerField(default=0)
+    avatar = models.URLField(blank=True)
 
     def __str__(self):
         return "%s - %s" % (self.id, self.name)
@@ -38,6 +39,7 @@ class Event(models.Model):
     end_time = models.DateTimeField("Event End Time", null=True, blank=True)
     base_price = models.IntegerField(default=0)
     mec_price = models.IntegerField(default=0)
+    logo = models.URLField(blank=True)
 
     def __str__(self):
         return self.name
