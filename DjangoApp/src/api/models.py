@@ -36,7 +36,7 @@ class Event(models.Model):
     is_team = models.BooleanField("Team Event", default=False)
     is_active = models.BooleanField("Is Active", default=False)
     start_time = models.DateTimeField("Event Start Time", null=True, blank=True)
-    end_time = models.DateTimeField("Event End Time", null=True, blank=True)
+    duration = models.DurationField("Event End Time", null=True, blank=True)
     base_price = models.IntegerField(default=0)
     mec_price = models.IntegerField(default=0)
     logo = models.URLField(blank=True)
