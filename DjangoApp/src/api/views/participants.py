@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework import status
+from rest_framework.response import Response
 
 from api.helper_functions import baseviews, misc, exceptions
 from api.serializer import *
@@ -43,6 +44,12 @@ class ExcelIDEventsView(generics.ListAPIView):
         participant = misc.get_excel_id(excel_id)
         events = participant.events.all().prefetch_related('event')
         return events
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        data = [ event for event in serializer.data]
+        return Response({'results': data})
     
 class SpecificEventsExcelIDView(generics.RetrieveAPIView):
     serializer_class = ParticipantDetailSerializer

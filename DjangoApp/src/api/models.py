@@ -36,6 +36,7 @@ class Event(models.Model):
     is_paid = models.BooleanField("Paid Event", default=False)
     is_team = models.BooleanField("Team Event", default=False)
     is_active = models.BooleanField("Is Active", default=False)
+    event_ended = models.BooleanField("Event Ended", default=False)
     start_time = models.DateTimeField("Event Start Time", null=True, blank=True)
     duration = models.DurationField("Event End Time", null=True, blank=True)
     base_price = models.IntegerField(default=0)
