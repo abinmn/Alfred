@@ -23,6 +23,7 @@ class ExcelID(models.Model):
     price = models.IntegerField(default=0)
     avatar = models.URLField(blank=True)
 
+
     def __str__(self):
         return "%s - %s" % (self.id, self.name)
 

@@ -119,4 +119,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 STATIC_URL = '/static/'
+
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = "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"
+SENDGRID_SANDBOX_MODE_IN_DEBUG=False

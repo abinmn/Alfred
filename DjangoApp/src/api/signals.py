@@ -5,8 +5,8 @@ from django.db import IntegrityError
 from django.db import transaction
 
 
-from api.models import Team, Event_Participants
-from api.helper_functions import misc
+from api.models import Team, Event_Participants, ExcelID
+from api.helper_functions import misc, pdf_generator
 
 @receiver(m2m_changed, sender=Team.members.through)
 def create_participant_instance(sender, **kwargs):
@@ -42,3 +42,10 @@ def update_participant_instance(sender, **kwargs):
         is_winner = instance.is_winner,
         winner_position = instance.winner_position
     )
+
+
+@receiver(post_save, sender=ExcelID)
+def update_participant_instance(sender, **kwargs):
+    if kwargs.get('created'):
+        instance = kwargs.get("instance")
+        pdf = pdf_generator.createBarCodes(instance)

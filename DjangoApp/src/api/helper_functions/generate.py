@@ -2,7 +2,6 @@ import uuid
 from django.core.exceptions import ObjectDoesNotExist
 
 from api import models
-import pyqrcode
 
 def generate_id():
     last_id = models.ExcelID.objects.latest('id').id
@@ -18,9 +17,6 @@ def generate_id():
     except ObjectDoesNotExist:
         return new_id
 
-def generate_qr(excel_id):
-    qr = pyqrcode.create(excel_id)
-    return qr
 
 def generate_team_id():
     team_id = uuid.uuid4().hex

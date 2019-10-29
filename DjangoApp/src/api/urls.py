@@ -2,6 +2,7 @@ from django.urls import path, include
 import api.views.registration as registration
 import api.views.events as events
 import api.views.participants as participants
+import api.helper_functions.pdf_generator as pdf_generator
 
 urlpatterns = [
     path('colleges/', registration.CollegeList.as_view()),
