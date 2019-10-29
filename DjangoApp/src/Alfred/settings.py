@@ -77,10 +77,15 @@ WSGI_APPLICATION = 'Alfred.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'brihaspati',
+        'HOST': '34.93.176.239',
+        'PORT': 5432,
+	'PASSWORD': 'brihaspati',
     }
 }
+
 
 
 # Password validation
