@@ -56,8 +56,9 @@ class ExcelIdDetails(ListCreateAPIView):
             return ExcelID.objects.filter(phone_number=phone_number)
     
     def post(self, request, format=None):
-        request.data['id'] = generate.generate_id()
-        serializer = ExcelIdSerializer(data=request.data)  
+        data = request.data.copy()
+        data['id'] = generate.generate_id()
+        serializer = ExcelIdSerializer(data=data)  
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
