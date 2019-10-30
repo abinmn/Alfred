@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'Alfred.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
@@ -87,6 +87,13 @@ DATABASES = {
         'HOST': '34.93.176.239',
         'PORT': 5432,
 	'PASSWORD': 'brihaspati',
+    }
+}"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
 
@@ -131,6 +138,7 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"

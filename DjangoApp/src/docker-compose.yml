@@ -3,8 +3,9 @@ version: '3'
 services:
   web:
     build: .
-    command: gunicorn Alfred.wsgi:application --bind 0.0.0.0:8000 --workers=3
+    command: python manage.py collectstatic
+    command: gunicorn Alfred.wsgi:application --bind 0.0.0.0:80 --workers=3
     volumes:
       - .:/code
     ports:
-      - "80:8000"
+      - "80:80"
