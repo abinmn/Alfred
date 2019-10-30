@@ -66,6 +66,7 @@ class Event_Participants(models.Model):
 class Team(models.Model):
     team_id = models.CharField(max_length=32)   
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="teams")
+    leader = models.ForeignKey(ExcelID, related_name="leader", on_delete=models.CASCADE)
     members = models.ManyToManyField(ExcelID, related_name="teams")
     is_shortListed = models.BooleanField(default=False)
     is_winner = models.BooleanField(default=False)
