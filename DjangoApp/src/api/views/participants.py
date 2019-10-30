@@ -53,10 +53,18 @@ class ExcelIDEventsView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
+        excel_id = self.request.query_params.get('excel_id', None)
+        excel_id = misc.get_excel_id(excel_id)
+
 
         for i in range(len(serializer.data)):
             event_id = serializer.data[i]["event"]["id"]
             event = Event.objects.get(id=event_id)
+            if event.is_team:
+                leader = excel_id.leader.filter(event=event).count()
+                if leader:
+                    serializer.data[i]["event"]["team_leader"] = self.get_prelims_status(event)
+                continue
             serializer.data[i]["event"]["prelims_submitted"] = self.get_prelims_status(event)
             
         data = [event for event in serializer.data]
