@@ -4,10 +4,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from api import models
 
 def generate_id():
-    last_id = models.ExcelID.objects.latest('id').id
-    last_id_alpha = last_id[:2]
-    last_id_num = int(last_id[2:])
-
+    try:
+        last_id = models.ExcelID.objects.latest('id').id
+        last_id_alpha = last_id[:2]
+        last_id_num = int(last_id[2:])
+    except:
+        last_id_alpha = 'EX'
+        last_id_num = 0
+        
     new_id = last_id_num + 1
     new_id = last_id_alpha + str(new_id)
 
