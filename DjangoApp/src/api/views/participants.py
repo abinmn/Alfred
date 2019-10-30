@@ -62,7 +62,7 @@ class ExcelIDEventsView(generics.ListAPIView):
             event = Event.objects.get(id=event_id)
             if event.is_team:
                 leader = excel_id.leader.filter(event=event).count()
-                if leader:
+                if leader == 1:
                     serializer.data[i]["event"]["team_leader"] = self.get_prelims_status(event)
                 continue
             serializer.data[i]["event"]["prelims_submitted"] = self.get_prelims_status(event)
