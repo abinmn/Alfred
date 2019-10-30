@@ -30,15 +30,15 @@ class ExcelID(models.Model):
 class Event(models.Model):
     id = models.CharField(primary_key = True, max_length=10)
     name = models.CharField("Event Name", max_length=50)
-    short_rules = models.TextField("Event Rules", blank=True)
-    long_rules = models.TextField("Event Rules", blank=True)
+    short_rules = models.TextField("Short Rules", blank=True)
+    long_rules = models.TextField("Long Rules", blank=True)
     venue = models.CharField(max_length = 100, blank=True)
     is_paid = models.BooleanField("Paid Event", default=False)
     is_team = models.BooleanField("Team Event", default=False)
     is_active = models.BooleanField("Is Active", default=False)
     event_ended = models.BooleanField("Event Ended", default=False)
     start_time = models.DateTimeField("Event Start Time", null=True, blank=True)
-    duration = models.DurationField("Event End Time", null=True, blank=True)
+    duration = models.DurationField("Event Duration", null=True, blank=True)
     base_price = models.IntegerField(default=0)
     mec_price = models.IntegerField(default=0)
     logo = models.URLField(blank=True)
@@ -53,6 +53,7 @@ class Event_Participants(models.Model):
     have_paid = models.BooleanField(default=False)
     is_shortListed = models.BooleanField(default=False)
     is_winner = models.BooleanField(default=False)
+    is_prelims_completed = models.BooleanField(default=False)
     winner_position = models.IntegerField(blank=True, default=0)
 
     class Meta:

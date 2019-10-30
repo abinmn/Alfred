@@ -45,7 +45,7 @@ class EventStatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['id', 'is_active']
+        fields = ['id', 'is_active', 'event_ended']
 
 class ParticipantEventSerializer(serializers.ModelSerializer):
 
