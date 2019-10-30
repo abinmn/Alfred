@@ -44,20 +44,32 @@ class ExcelIDEventsView(generics.ListAPIView):
         participant = misc.get_excel_id(excel_id)
         events = participant.events.all().prefetch_related('event')
         return events
+
+    def get_prelims_status(self, event):
+        excel_id = self.request.query_params.get('excel_id', None)
+        participant = misc.get_event_participant(excel_id, event)
+        return participant.is_prelims_completed
     
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
-        data = [ event for event in serializer.data]
+
+        for i in range(len(serializer.data)):
+            event_id = serializer.data[i]["event"]["id"]
+            event = Event.objects.get(id=event_id)
+            serializer.data[i]["event"]["prelims_submitted"] = self.get_prelims_status(event)
+            
+        data = [event for event in serializer.data]
         return Response({'results': data})
     
-class SpecificEventsExcelIDView(generics.RetrieveAPIView):
+class SpecificEventsExcelIDView(generics.RetrieveAPIView, generics.UpdateAPIView):
     serializer_class = ParticipantDetailSerializer
     lookup_field = 'id'
 
     def get_object(self):
         queryset = self.get_queryset()
         return queryset.first()
+
 
     def get_queryset(self):
         excel_id = self.request.query_params.get('excel_id', None)
