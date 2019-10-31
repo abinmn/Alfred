@@ -51,23 +51,30 @@ class ExcelIDEventsView(generics.ListAPIView):
         return participant.is_prelims_completed
     
     def list(self, request, *args, **kwargs):
+        include_team = request.query_params.get('include_team_events', False)
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         excel_id = self.request.query_params.get('excel_id', None)
         excel_id = misc.get_excel_id(excel_id)
 
-
+        deletion_list = []
         for i in range(len(serializer.data)):
             event_id = serializer.data[i]["event"]["id"]
             event = Event.objects.get(id=event_id)
             if event.is_team:
                 leader = excel_id.leader.filter(event=event).count()
+                print(leader)
+                
                 if leader == 1:
-                    serializer.data[i]["event"]["team_leader"] = self.get_prelims_status(event)
-                continue
+                    serializer.data[i]["event"]["team_leader"] = True
+                    serializer.data[i]["event"]["prelims_submitted"] = self.get_prelims_status(event)
+                    continue
+                else:
+                    deletion_list.append(serializer.data[i])
+                    continue
             serializer.data[i]["event"]["prelims_submitted"] = self.get_prelims_status(event)
-            
-        data = [event for event in serializer.data]
+        data = [event for event in serializer.data if event not in deletion_list]
+        print(data)
         return Response({'results': data})
     
 class SpecificEventsExcelIDView(generics.RetrieveAPIView, generics.UpdateAPIView):
