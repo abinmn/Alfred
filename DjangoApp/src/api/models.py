@@ -21,7 +21,7 @@ class ExcelID(models.Model):
     is_mecian = models.BooleanField(default=False)
     is_FullAccess = models.BooleanField(default=True)
     price = models.IntegerField(default=0)
-    avatar = models.URLField(blank=True)
+    gender = models.CharField(max_length=1, default='N', blank=True)
 
 
     def __str__(self):

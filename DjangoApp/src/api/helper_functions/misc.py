@@ -6,6 +6,10 @@ from rest_framework import mixins
 from rest_framework.exceptions import NotFound
 from api.helper_functions import exceptions
 
+from django.core import serializers
+import requests
+import json
+
 def get_excel_id(excel_id):
 	return ExcelID.objects.get(id=excel_id)
 
@@ -77,3 +81,14 @@ def check_team_duplicate(members, event):
 	if existing_team == 0:
 		return False
 	return True
+
+def duplicate_to_brihaspati(instance):
+	data = serializers.serialize('json', (instance,))
+	data = json.loads(data)
+	newData = data[0]['fields']
+	newData['excel_id'] = data[0]['pk']
+	newData['contact_number'] = newData.pop('phone_number')
+	newData['email_id'] = newData.pop('email')
+	newData = json.dumps(newData)
+	endpoint = 'http://13.233.133.214/api/add-user'
+	result = requests.post(endpoint, data=newData)

@@ -4,7 +4,6 @@ from django.db.models.signals import post_save, m2m_changed
 from django.db import IntegrityError
 from django.db import transaction
 
-
 from api.models import Team, Event_Participants, ExcelID
 from api.helper_functions import misc, pdf_generator
 
@@ -46,6 +45,13 @@ def update_participant_instance(sender, **kwargs):
 
 @receiver(post_save, sender=ExcelID)
 def update_participant_instance(sender, **kwargs):
+
+    instance = kwargs.get("instance")
+    print('hi')
+    misc.duplicate_to_brihaspati(instance)
+
     if kwargs.get('created'):
         instance = kwargs.get("instance")
         pdf = pdf_generator.createBarCodes(instance)
+
+        misc.duplicate_to_brihaspati(instance)
