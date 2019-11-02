@@ -102,3 +102,4 @@ def duplicate_events_brihaspati(instance):
 	newData = json.dumps(newData)
 	endpoint = 'http://13.233.133.214/api/add-event'
 	result = requests.post(endpoint, data=newData)
+	

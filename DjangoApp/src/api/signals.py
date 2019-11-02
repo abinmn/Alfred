@@ -53,10 +53,7 @@ def generate_participant_instance(sender, **kwargs):
         misc.duplicate_to_brihaspati(instance)
 
 @receiver(post_save, sender=Event)
-def generate_participant_instance(sender, **kwargs):
-
-    instance = kwargs.get("instance")
-    misc.duplicate_events_brihaspati(instance)
+def generate_event_instance(sender, **kwargs):
     
     if kwargs.get('created'):
         instance = kwargs.get("instance")
