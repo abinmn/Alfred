@@ -110,5 +110,6 @@ def duplicate_participants_brihaspati(instance):
 	newData = {}
 	newData['user'] = data[0]['fields']['excel_id']
 	newData['event'] = data[0]['fields']['event']
+	newData = json.dumps(newData)
 	endpoint = 'http://13.233.133.214/api/add-participant'
 	result = requests.post(endpoint, data=newData)
