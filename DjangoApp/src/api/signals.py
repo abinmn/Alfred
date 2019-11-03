@@ -63,6 +63,6 @@ def generate_event_instance(sender, **kwargs):
 def generate_event_participant_instance(sender, **kwargs):
     
     
-    if not kwargs.get('created'):
+    if kwargs.get('created'):
         instance = kwargs.get("instance")
         misc.duplicate_participants_brihaspati(instance)
