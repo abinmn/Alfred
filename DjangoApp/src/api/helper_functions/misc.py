@@ -103,3 +103,12 @@ def duplicate_events_brihaspati(instance):
 	endpoint = 'http://13.233.133.214/api/add-event'
 	result = requests.post(endpoint, data=newData)
 	
+
+def duplicate_participants_brihaspati(instance):
+	data = serializers.serialize('json', (instance,))
+	data = json.loads(data)
+	newData = {}
+	newData['user'] = data[0]['fields']['excel_id']
+	newData['event'] = data[0]['fields']['event']
+	endpoint = 'http://13.233.133.214/api/add-participant'
+	result = requests.post(endpoint, data=newData)
