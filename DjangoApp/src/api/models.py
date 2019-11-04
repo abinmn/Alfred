@@ -17,7 +17,7 @@ class ExcelID(models.Model):
     name = models.CharField("Student Name",max_length = 100)
     college = models.ForeignKey(College, on_delete=models.CASCADE, related_name="students")
     email = models.EmailField("Email", max_length=254, unique=True)
-    phone_number = models.IntegerField("Phone Number", unique=True)
+    phone_number = models.CharField("Phone Number", max_length=10, unique=True)
     is_mecian = models.BooleanField(default=False)
     is_FullAccess = models.BooleanField(default=True)
     price = models.IntegerField(default=0)
