@@ -29,3 +29,7 @@ def generate_team_id():
         return generate_team_id()
     except ObjectDoesNotExist:
         return team_id
+
+def generate_pin():
+    pin = int(str(uuid.uuid4().int)[:6])
+    return pin

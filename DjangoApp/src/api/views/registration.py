@@ -58,6 +58,7 @@ class ExcelIdDetails(ListCreateAPIView):
     def post(self, request, format=None):
         data = request.data.copy()
         data['id'] = generate.generate_id()
+        data['pin'] = generate.generate_pin()
         serializer = ExcelIdSerializer(data=data)  
         if serializer.is_valid():
             serializer.save()

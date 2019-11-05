@@ -90,7 +90,7 @@ def duplicate_to_brihaspati(instance):
 	newData['contact_number'] = newData.pop('phone_number')
 	newData['email_id'] = newData.pop('email')
 	newData = json.dumps(newData)
-	endpoint = 'http://13.233.133.214/api/add-user'
+	endpoint = 'https://brihaspati-jhyf6iaxsq-an.a.run.app/api/add-user'
 	result = requests.post(endpoint, data=newData)
 	
 def duplicate_events_brihaspati(instance):
