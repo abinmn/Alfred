@@ -89,6 +89,7 @@ def duplicate_to_brihaspati(instance):
 	newData['excel_id'] = data[0]['pk']
 	newData['contact_number'] = newData.pop('phone_number')
 	newData['email_id'] = newData.pop('email')
+	newData['college'] = newData.pop('college')
 	newData = json.dumps(newData)
 	endpoint = 'https://brihaspati-jhyf6iaxsq-an.a.run.app/api/add-user'
 	result = requests.post(endpoint, data=newData)

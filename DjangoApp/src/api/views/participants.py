@@ -67,7 +67,7 @@ class ExcelIDEventsView(generics.ListAPIView):
                 
                 if leader == 1:
                     serializer.data[i]["event"]["team_leader"] = True
-                    serializer.data[i]["event"]["prelims_submitted"] = self.get_prelims_status(event)
+                    serializer.data[i]["event"]["is_prelims_submitted"] = self.get_prelims_status(event)
                     continue
                 else:
                     deletion_list.append(serializer.data[i])

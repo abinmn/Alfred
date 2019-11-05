@@ -12,6 +12,7 @@ def create_participant_instance(sender, **kwargs):
 
     instance = kwargs.get("instance")
     team_members = instance.members.all()
+
     event = instance.event
     if kwargs.get("action") == 'post_add':
         participant_instance = map(
@@ -24,6 +25,10 @@ def create_participant_instance(sender, **kwargs):
                 instance.members.set(team_members)
         except IntegrityError:
             pass
+    
+    for member in team_members:
+        participant = Event_Participants.objects.get(excel_id=member, event=instance.event)
+        misc.duplicate_participants_brihaspati(participant)
   
     
 @receiver(post_save, sender=Team)
@@ -48,9 +53,8 @@ def generate_participant_instance(sender, **kwargs):
 
     if kwargs.get('created'):
         instance = kwargs.get("instance")
-        pdf = pdf_generator.createBarCodes(instance)
-
         misc.duplicate_to_brihaspati(instance)
+
 
 @receiver(post_save, sender=Event)
 def generate_event_instance(sender, **kwargs):
@@ -61,7 +65,6 @@ def generate_event_instance(sender, **kwargs):
 
 @receiver(post_save, sender=Event_Participants)
 def generate_event_participant_instance(sender, **kwargs):
-    
     
     if kwargs.get('created'):
         instance = kwargs.get("instance")
