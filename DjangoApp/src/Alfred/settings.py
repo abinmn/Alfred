@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -79,14 +85,16 @@ WSGI_APPLICATION = 'Alfred.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'brihaspati',
-        'HOST': '34.87.115.46',
+        'USER': env('DB_USER'),
+        'HOST': env('DATABASE_URL'),
         'PORT': 5432,
-	'PASSWORD': 'brihaspati',
+	'PASSWORD' : env('DB_PASSWORD'),
     }
 }
 
