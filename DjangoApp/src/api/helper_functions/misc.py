@@ -100,7 +100,7 @@ def duplicate_events_brihaspati(instance):
 	newData['name'] = data[0]['fields']['name']
 	newData['id'] = data[0]['pk']
 	newData = json.dumps(newData)
-	endpoint = 'http://13.233.133.214/api/add-event'
+	endpoint = 'https://brihaspati-jhyf6iaxsq-an.a.run.app/api/add-event'
 	result = requests.post(endpoint, data=newData)
 	
 
@@ -111,5 +111,5 @@ def duplicate_participants_brihaspati(instance):
 	newData['user'] = data[0]['fields']['excel_id']
 	newData['event'] = data[0]['fields']['event']
 	newData = json.dumps(newData)
-	endpoint = 'http://13.233.133.214/api/add-participant'
+	endpoint = 'https://brihaspati-jhyf6iaxsq-an.a.run.app/api/add-participant'
 	result = requests.post(endpoint, data=newData)
